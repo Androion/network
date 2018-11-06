@@ -16,9 +16,9 @@ def allPosts(request):
     return render(request, 'posts.html', {'subjects': subjects, 'posts': posts})
 
 def sortedPosts(request, subject_id):
-     subjects = Subject.objects.filter(created_date__lte=timezone.now()).order_by('created_date')
-     posts = Post.objects.filter(created_date__lte=timezone.now(), subject = subject_id).order_by('created_date').reverse()
-     return render(request, 'posts.html', {'subjects': subjects, 'posts': posts})
+    subjects = Subject.objects.filter(created_date__lte=timezone.now()).order_by('created_date')
+    posts = Post.objects.filter(created_date__lte=timezone.now(), subject = subject_id).order_by('created_date').reverse()
+    return render(request, 'posts.html', {'subjects': subjects, 'posts': posts})
 
 def detail(request, post_id):
     if request.method == "POST":
@@ -35,7 +35,7 @@ def detail(request, post_id):
     subjects = Subject.objects.filter(created_date__lte=timezone.now()).order_by('created_date')
     posts = Post.objects.filter(id = post_id)
     comments = Comment.objects.filter(post = post_id).order_by('created_date').reverse()
-    return render(request, 'detail.html', {'posts' : posts, 'subjects': subjects, 'comments' : comments, 'form': form})
+    return render(request, 'detail.html', {'posts':posts, 'subjects':subjects, 'comments':comments, 'form':form})
 
 def likes(request, post_id):
     post = Post.objects.get(id = post_id)
@@ -48,7 +48,7 @@ def likes(request, post_id):
     else:
         post.numOfLike += 1
     post.save(update_fields=['numOfLike'])
-    return HttpResponseRedirect("/".format(post.id))
+    return HttpResponseRedirect("/")
 
 def write(request):
     if request.method == "POST":

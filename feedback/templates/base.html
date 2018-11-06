@@ -20,6 +20,7 @@
             margin-bottom: 70px;
         }
     </style>
+    <script src='https://www.google.com/recaptcha/api.js?render=6Lff0HgUAAAAADMK1_9BZlFIWv5sn1VcWHqkwXr5'></script>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
@@ -30,22 +31,14 @@
        <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav mr-auto">
              <li class="nav-item">
-              {% if request.path is "/write/" %}
-                {% if user.is_authenticated %}
-                  <a class="nav-link active" href="/write/">글쓰기</a>
-                {% else %}
-                  <a class="nav-link active" href="#" data-toggle="modal" data-target="#loginModal">글쓰기</a>
-                {% endif %}
+              {% if user.is_authenticated %}
+                <a href="/write/"{% if request.path == '/write/'%} class="nav-link active" {% else %} class="nav-link" {% endif %}>글쓰기</a>
               {% else %}
-                {% if user.is_authenticated %}
-                  <a class="nav-link" href="/write/">글쓰기</a>
-                {% else %}
-                  <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">글쓰기</a>
-                {% endif %}
+                <a class="nav-link" href="#" data-toggle="modal" data-target="#loginModal">글쓰기</a>
               {% endif %}
              </li>
              <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a href="#" {% if request.path == '/'%} class="nav-link dropdown-toggle active" {% else %} class="nav-link dropdown-toggle" {% endif %} id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 과목
                 </a>
                 <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -91,7 +84,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-            <button type="button" class="btn btn-primary">로그인</button>
+            <a href="{% url 'login' %}"><button type="button" class="btn btn-primary">로그인</button></a>
           </div>
         </div>
       </div>

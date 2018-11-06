@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+    <h1 class="text-center">올라온 피드백을 확인해 보세요.</h1>
     <div class="masonry-container">
         {% for post in posts %}
             <div class="card-box col-md-4 col-sm-6">
@@ -15,7 +16,7 @@
                         <p class="description">{{ post.improvingPoint|linebreaksbr }}</p>
                         <h5>제안할 점</h6>
                         <p class="description">{{ post.anotherPoint|linebreaksbr }}</p>
-                        <hr>
+                        <hr>ㅇ
                         <div class="footer btn-center">
                             <a href="/likes/{{post.id}}/"><button type="submit" class="btn btn-dark btn-round" value="{{post.numOfLike}}">좋아요 {{ post.numOfLike }}</button></a>
                         </div>
