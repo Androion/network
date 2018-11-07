@@ -1,8 +1,13 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div class="container text-center col-sm-4">
-        <h3> Feedback Site Login </h3>
+    <style>
+        input {
+            max-width: 300px;
+        }
+    </style>
+    <div class="container text-left">
+        <h1 class="display-4"> 로그인 </h1>
             <form method="POST" class="post-form">
                 {% csrf_token %}
                 <div class="form-group input-group mb-3">
