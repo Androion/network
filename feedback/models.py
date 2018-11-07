@@ -15,7 +15,7 @@ class Subject(models.Model):
 
 class Post(models.Model):
     subject = models.ForeignKey('feedback.Subject', default=1, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     goodPoint = models.TextField(verbose_name='좋았던 점', default=' ')
     improvingPoint = models.TextField(verbose_name='개선되었으면 하는 점', default=' ')
     anotherPoint = models.TextField(verbose_name='하고싶은 말', default=' ')
@@ -30,14 +30,15 @@ class Post(models.Model):
         return str(self.user)
 
 class Comment(models.Model):
-	post = models.ForeignKey('feedback.Post', related_name='comments', default=1, on_delete=models.CASCADE)
-	commentDesc = models.TextField(verbose_name='댓글', default=' ')
-	created_date = models.DateTimeField(auto_now=True)
+    post = models.ForeignKey('feedback.Post', on_delete=models.CASCADE)
+    user = models.CharField(verbose_name="작성자", max_length=256)
+    commentDesc = models.TextField(verbose_name='댓글', default=' ')
+    created_date = models.DateTimeField(auto_now=True)
 
-	def __str__(self):
-		return str(self.commentDesc)
+    def __str__(self):
+        return str(self.commentDesc)
 
 class Like(models.Model):
-    post = models.ForeignKey('feedback.Subject', default=1, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, default=1, on_delete=models.CASCADE,)
+    post = models.ForeignKey('feedback.Post', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE,)
     isUserLiked = models.DateTimeField(auto_now_add=True)

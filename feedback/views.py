@@ -20,23 +20,6 @@ def sortedPosts(request, subject_id):
     posts = Post.objects.filter(created_date__lte=timezone.now(), subject = subject_id).order_by('created_date').reverse()
     return render(request, 'posts.html', {'subjects': subjects, 'posts': posts})
 
-def detail(request, post_id):
-    if request.method == "POST":
-        form = CommentForm(request.POST)
-        if form.is_valid():
-            comment = form.save(commit=False)
-            comment.post = Post.objects.get(id = post_id)
-            comment.name = request.user
-            comment.created_date = timezone.now()
-            comment.save()
-            return redirect('/look/{}'.format(post_id))
-    else:
-        form = CommentForm()
-    subjects = Subject.objects.filter(created_date__lte=timezone.now()).order_by('created_date')
-    posts = Post.objects.filter(id = post_id)
-    comments = Comment.objects.filter(post = post_id).order_by('created_date').reverse()
-    return render(request, 'detail.html', {'posts':posts, 'subjects':subjects, 'comments':comments, 'form':form})
-
 def likes(request, post_id):
     post = Post.objects.get(id = post_id)
     new_like, created = Like.objects.get_or_create(user=request.user, post_id=post_id)
@@ -50,12 +33,29 @@ def likes(request, post_id):
     post.save(update_fields=['numOfLike'])
     return HttpResponseRedirect("/")
 
+def detail(request, post_id):
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = Post.objects.get(id = post_id)
+            comment.user = request.user
+            comment.created_date = timezone.now()
+            comment.save()
+            return redirect('/detail/{}'.format(post_id))
+    else:
+        form = CommentForm()
+    subjects = Subject.objects.filter(created_date__lte=timezone.now()).order_by('created_date')
+    posts = Post.objects.filter(id = post_id)
+    comments = Comment.objects.filter(post = post_id).order_by('created_date').reverse()
+    return render(request, 'detail.html', {'posts':posts, 'subjects':subjects, 'comments':comments, 'form':form})
+
 def write(request):
     if request.method == "POST":
         form = PostForm(request.POST)
         if form.is_valid():
             post = form.save(commit=False)
-            post.name = request.user
+            post.user = request.user
             post.created_date = timezone.now()
             post.save()
             return redirect('allPosts')
